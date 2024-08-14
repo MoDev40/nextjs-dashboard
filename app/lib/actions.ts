@@ -161,8 +161,6 @@ export const createCustomer = async (prevState:CustomerState,formData:FormData)=
     image_url: formData.get('image_url')
   });
   
-  console.log(formData.get('image_url'))
-
   if(!success) {
     return {
       errors: error.flatten().fieldErrors,
@@ -182,3 +180,30 @@ export const createCustomer = async (prevState:CustomerState,formData:FormData)=
   revalidatePath("/dashboard/customers")
   redirect("/dashboard/customers")
 }
+
+export const updateCustomer = async (prevState:CustomerState,formData:FormData)=>{
+  const { success, data, error } = customerFormSchema.safeParse({
+    email: formData.get('email'),
+    name: formData.get('username'),
+    image_url: formData.get('image_url')
+  });
+  
+  if(!success) {
+    return {
+      errors: error.flatten().fieldErrors,
+      message:"Missing fields failed to create customer"
+    }
+  }
+
+  try {
+
+    const { email, name, image_url } = data;
+
+
+  } catch (error) {
+    throw new Error("Failed to create a new customer")
+  }
+  revalidatePath("/dashboard/customers")
+  redirect("/dashboard/customers")
+}
+

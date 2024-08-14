@@ -5,6 +5,7 @@ import { AuthError } from "next-auth";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
+import bcrypt from "bcrypt";
 
 const FormSchema = z.object({
   id: z.string(),
@@ -112,6 +113,49 @@ export async function deleteInvoice(id: string) {
   revalidatePath("/dashboard/invoices");
 }
 
+export type SignUpState = {
+  errors?: {
+    email?: string[];
+    password?: string[];
+  };
+  message?: string | null;
+}
+
+const signUpSchema = z.object({
+  email: z.string().email({
+    message: "Email is field required.",
+  }),
+  password: z.string({
+    message: "password is field required.",
+  }).min(6,"password must be 6 characters.").max(6,"password must be 6 characters.")
+})
+
+export async function signUp(prevState: SignUpState,formData: FormData) {
+  const { data, error, success } = signUpSchema.safeParse({
+    email: formData.get("email"),
+    password: formData.get("password"),
+  });
+
+  if (!success) {
+    return {
+      errors: error.flatten().fieldErrors,
+      message: "Missing fields failed to sign up",
+    };
+  }
+
+  try {
+    const { email, password } = data;
+    const hashedPassword = await bcrypt.hash(password, 10);
+  
+    await sql `INSERT INTO users (email, password) VALUES(${email}, ${hashedPassword})`
+
+  } catch (error) {
+    console.error(error);
+    throw new Error("Failed to sign up please try again")
+  }
+
+  redirect("/login");
+}
 export async function authenticate(
   prevState: string | undefined,
   formData: FormData

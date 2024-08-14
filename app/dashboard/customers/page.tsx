@@ -1,6 +1,8 @@
+import { fetchCustomersTotalPages } from "@/app/lib/data";
 import { CreateCustomer } from "@/app/ui/customers/buttons";
 import CustomersTable from "@/app/ui/customers/table";
 import { lusitana } from "@/app/ui/fonts";
+import Pagination from "@/app/ui/invoices/pagination";
 import Search from "@/app/ui/search";
 import { CustomersTableSkeleton } from "@/app/ui/skeletons";
 import { Suspense } from "react";
@@ -10,8 +12,14 @@ type SearchParams = {
   page?: string;
 };
 
-export default function Page({ searchParams }: { searchParams: SearchParams }) {
+export default async function Page({
+  searchParams,
+}: {
+  searchParams: SearchParams;
+}) {
   const query = searchParams.query || "";
+  const page = Number(searchParams.page) || 1;
+  const totalPages = await fetchCustomersTotalPages();
   return (
     <div className="w-full">
       <div className="flex w-full items-center justify-between">
@@ -22,8 +30,11 @@ export default function Page({ searchParams }: { searchParams: SearchParams }) {
         <CreateCustomer />
       </div>
       <Suspense fallback={<CustomersTableSkeleton />}>
-        <CustomersTable query={query} />
+        <CustomersTable page={page} query={query} />
       </Suspense>
+      <div className="mt-5 flex w-full justify-center">
+        <Pagination totalPages={totalPages} />
+      </div>
     </div>
   );
 }

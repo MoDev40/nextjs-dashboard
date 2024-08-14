@@ -1,6 +1,6 @@
 "use client";
 
-import { createCustomer, CustomerState, updateCustomer } from "@/app/lib/actions";
+import { CustomerState, updateCustomer } from "@/app/lib/actions";
 import Link from "next/link";
 import { useActionState } from "react";
 import { Button } from "../button";
@@ -9,7 +9,9 @@ import { Customer } from "@/app/lib/definitions";
 const initialState: CustomerState = { errors: {}, message: null };
 
 const Form = ({ customer }: { customer: Customer }) => {
-  const [state, formAction, isPending] = useActionState(updateCustomer,initialState)
+  const updateCustomerById = updateCustomer.bind(null,customer.id)
+  
+  const [state, formAction, isPending] = useActionState(updateCustomerById,initialState)
   return (
     <form
       action={formAction}

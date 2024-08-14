@@ -232,22 +232,13 @@ export function CustomersTableSkeleton() {
           <table className="hidden min-w-full text-gray-900 md:table">
             <thead className="rounded-md bg-gray-50 text-left text-sm font-normal">
               <tr>
-                <th scope="col" className="px-4 py-5 font-medium sm:pl-6">
-                  Name
+                <th scope="col" className="px-3 py-5 font-medium">
                 </th>
                 <th scope="col" className="px-3 py-5 font-medium">
-                  Email
                 </th>
                 <th scope="col" className="px-3 py-5 font-medium">
-                  Total Invoices
                 </th>
-                <th scope="col" className="px-3 py-5 font-medium"></th>
-                <th scope="col" className="px-3 py-5 font-medium">
-                  Total Pending
-                </th>
-                <th scope="col" className="px-3 py-5 font-medium"></th>
                 <th scope="col" className="px-4 py-5 font-medium">
-                  Total Paid
                 </th>
               </tr>
             </thead>

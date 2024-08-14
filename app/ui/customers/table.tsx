@@ -1,8 +1,9 @@
-import { fetchFilteredCustomers } from '@/app/lib/data';
-import Image from 'next/image';
+import { fetchFilteredCustomers } from "@/app/lib/data";
+import Image from "next/image";
+import { UpdateCustomer } from "./buttons";
 
-export default async function CustomersTable({ query }:{ query:string;}) {
-  const customers = await fetchFilteredCustomers(query)
+export default async function CustomersTable({ query }: { query: string }) {
+  const customers = await fetchFilteredCustomers(query);
   return (
     <div className="w-full">
       <div className="mt-6 flow-root">
@@ -97,6 +98,11 @@ export default async function CustomersTable({ query }:{ query:string;}) {
                       </td>
                       <td className="whitespace-nowrap bg-white px-4 py-5 text-sm group-first-of-type:rounded-md group-last-of-type:rounded-md">
                         {customer.total_paid}
+                      </td>
+                      <td className="whitespace-nowrap bg-white py-3 pl-6 pr-3">
+                        <div className="flex justify-end gap-3">
+                          <UpdateCustomer id={customer.id} />
+                        </div>
                       </td>
                     </tr>
                   ))}

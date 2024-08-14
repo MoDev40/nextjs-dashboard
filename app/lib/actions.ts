@@ -212,3 +212,15 @@ export const updateCustomer = async (
   revalidatePath("/dashboard/customers");
   redirect("/dashboard/customers");
 };
+
+export async function deleteCustomer(id: string) {
+  try {
+    await sql`
+      DELETE FROM customers
+      WHERE id = ${id}
+    `;
+  } catch (error) {
+    return { message: "Database Error: Failed to Delete Invoice." };
+  }
+  revalidatePath("/dashboard/customers");
+}

@@ -172,8 +172,9 @@ export const createCustomer = async (prevState:CustomerState,formData:FormData)=
 
   try {
 
-    // const { email, name, image_url } = data;
-    console.log(data);
+    const { email, name, image_url } = data;
+
+    await sql `INSERT INTO customers (name,email,image_url) VALUES (${name},${email},${image_url})`
 
   } catch (error) {
     throw new Error("Failed to create a new customer")

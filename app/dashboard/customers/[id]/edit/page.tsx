@@ -1,9 +1,18 @@
+import { fetchCustomerById } from '@/app/lib/data'
+import { notFound } from 'next/navigation';
+
 import React from 'react'
 
-const page = ({ params }:{ params:{ id:string }}) => {
+const page = async ({ params }:{ params:{ id:string }}) => {
     const { id } = params 
+    const customer = await fetchCustomerById(id)
+
+    if(!customer){
+      notFound()
+    }
+
   return (
-    <div>{id}</div>
+    <div>{JSON.stringify(customer)}</div>
   )
 }
 

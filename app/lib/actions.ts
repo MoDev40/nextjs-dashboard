@@ -132,3 +132,52 @@ export async function authenticate (
     throw error;
   }
 }
+
+const customerFormSchema = z.object({
+  email:z.string().email({
+    message:"Email is field required."
+  }),
+  name:z.string({
+    message:"Name field is required."
+  }),
+  image_url:z.string({
+    message:"image_url field is required."
+  })
+})
+
+export type CustomerState = {
+  errors?: {
+    email?: string[];
+    name?: string[];
+    image_url?: string[];
+  };
+  message?: string | null;
+}
+
+export const createCustomer = async (prevState:CustomerState,formData:FormData)=>{
+  const { success, data, error } = customerFormSchema.safeParse({
+    email: formData.get('email'),
+    name: formData.get('username'),
+    image_url: formData.get('image_url')
+  });
+  
+  console.log(formData.get('image_url'))
+
+  if(!success) {
+    return {
+      errors: error.flatten().fieldErrors,
+      message:"Missing fields failed to create customer"
+    }
+  }
+
+  try {
+
+    // const { email, name, image_url } = data;
+    console.log(data);
+
+  } catch (error) {
+    throw new Error("Failed to create a new customer")
+  }
+  revalidatePath("/dashboard/customers")
+  redirect("/dashboard/customers")
+}

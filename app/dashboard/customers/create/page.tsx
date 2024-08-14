@@ -1,5 +1,5 @@
 import Form from '@/app/ui/customers/create-form'
-import Breadcrumbs from '@/app/ui/invoices/breadcrumbs'
+import Breadcrumbs from '@/app/ui/breadcrumbs'
 
 const page = () => {
   return (
